@@ -61,6 +61,7 @@ dependencies {
 
     // Compose
     implementation(libs.material3)
+    implementation(libs.androidx.constraintlayout.compose)
 
     // Lifecycle + ViewModel + Navigation
     implementation(libs.androidx.lifecycle.runtime.ktx.v270)

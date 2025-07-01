@@ -1,5 +1,6 @@
 [versions]
 agp = "8.7.3"
+constraintlayoutCompose = "1.1.1"
 hiltAndroid = "2.51"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.0.0"
@@ -19,6 +20,7 @@ moshi = "1.15.0"
 coil = "2.5.0"
 
 [libraries]
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-lifecycle-runtime-ktx-v270 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
