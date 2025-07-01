@@ -80,11 +80,13 @@ fun FlightCard(flight: FlightInfo) {
                     text = "${flight.upAirportName}．${flight.upAirportCode}",
                     modifier = Modifier.weight(1f)
                 )
-                IconTextRow(
-                    iconResId = R.drawable.ic_door_front,
-                    text = "登機門．${flight.airBoardingGate}",
-                    modifier = Modifier.weight(1f)
-                )
+                if (flight.airBoardingGate.isNotBlank()) {
+                    IconTextRow(
+                        iconResId = R.drawable.ic_door_front,
+                        text = "登機門．${flight.airBoardingGate}",
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
         }
     }
