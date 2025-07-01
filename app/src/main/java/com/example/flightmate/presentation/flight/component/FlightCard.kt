@@ -6,12 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,16 +23,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import com.example.flightmate.data.model.FlightInfo
 import com.example.flightmate.R
 
 @Composable
 fun FlightCard(flight: FlightInfo) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
         Column {
             val rowModifier = Modifier.padding(12.dp)
             Row(modifier = rowModifier) {
@@ -117,6 +122,7 @@ fun FlightTime(
     Column(modifier = modifier) {
         Text(
             text = label,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 12.sp,
         )
         Text(
@@ -134,7 +140,9 @@ fun FlightAirlineInfo(
     logoUrl: String,
     modifier: Modifier
 ) {
-    Row(modifier = modifier) {
+    ConstraintLayout(modifier = modifier) {
+        val (logo, name, code) = createRefs()
+
         AsyncImage(
             model = logoUrl,
             contentDescription = "$airlineName Logo",
@@ -142,18 +150,28 @@ fun FlightAirlineInfo(
                 .size(24.dp)
                 .clip(CircleShape)
                 .background(Color.LightGray)
+                .constrainAs(logo) {
+                    top.linkTo(name.top)
+                    bottom.linkTo(name.bottom)
+                }
         )
-        Spacer(modifier = Modifier.width(8.dp))
-        Column {
-            Text(
-                text = airlineName,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = airlineCode,
-                fontSize = 12.sp
-            )
-        }
+        Text(
+            text = airlineName,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.constrainAs(name) {
+                top.linkTo(parent.top)
+                start.linkTo(logo.end, margin = 8.dp)
+            }
+        )
+        Text(
+            text = airlineCode,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontSize = 12.sp,
+            modifier = Modifier.constrainAs(code) {
+                top.linkTo(name.bottom)
+                start.linkTo(name.start)
+            }
+        )
     }
 }
