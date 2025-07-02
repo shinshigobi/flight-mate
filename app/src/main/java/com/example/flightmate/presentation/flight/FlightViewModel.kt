@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.flightmate.data.model.FlightInfo
 import com.example.flightmate.data.repository.flight.FlightRepository
+import com.example.flightmate.domain.model.flight.FlightAirline
 import com.example.flightmate.domain.model.flight.FlightFilter
 import com.example.flightmate.domain.model.flight.FlightStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,6 +42,15 @@ class FlightViewModel @Inject constructor(
 
             statusMatch && airlineMatch
         }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = emptyList()
+    )
+    val airlineList = _allFlightList.map { flightList ->
+        flightList.map { flight ->
+            FlightAirline(flight.airlineCode, flight.airlineName)
+        }.distinct()
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
