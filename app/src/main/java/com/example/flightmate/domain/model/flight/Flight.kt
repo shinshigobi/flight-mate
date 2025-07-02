@@ -12,3 +12,8 @@ enum class FlightStatus(val label: String) {
             entries.find { it.label == label } ?: UNKNOWN
     }
 }
+
+data class FlightAirline(
+    val code: String,
+    val name: String
+)
