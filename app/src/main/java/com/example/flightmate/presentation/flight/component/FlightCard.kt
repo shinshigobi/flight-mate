@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
-import com.example.flightmate.data.model.FlightInfo
 import com.example.flightmate.R
+import com.example.flightmate.domain.model.flight.FlightInfo
 
 @Composable
 fun FlightCard(flight: FlightInfo) {
@@ -42,14 +42,14 @@ fun FlightCard(flight: FlightInfo) {
             val rowModifier = Modifier.padding(12.dp)
             Row(modifier = rowModifier) {
                 FlightAirlineInfo(
-                    airlineName = flight.airlineName,
-                    airlineCode = flight.airlineCode,
-                    logoUrl = flight.airlineLogo,
+                    airlineName = flight.airline.name,
+                    airlineCode = flight.airline.code,
+                    logoUrl = flight.airline.logoUrl,
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = flight.airlineNo,
+                    text = flight.airline.no,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
@@ -70,7 +70,7 @@ fun FlightCard(flight: FlightInfo) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = flight.flightStatus,
+                    text = flight.flightStatus.displayLabel,
                     fontWeight = FontWeight.Bold
                 )
             }

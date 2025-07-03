@@ -1,16 +1,15 @@
 package com.example.flightmate.presentation.flight
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.flightmate.data.model.FlightInfo
-import com.example.flightmate.data.repository.flight.FlightRepository
-import com.example.flightmate.domain.model.flight.FlightAirline
+import com.example.flightmate.domain.exception.AppException
+import com.example.flightmate.domain.model.flight.FlightInfo
 import com.example.flightmate.domain.model.flight.FlightFilter
 import com.example.flightmate.domain.model.flight.FlightStatus
+import com.example.flightmate.domain.usecase.GetFlightListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FlightViewModel @Inject constructor(
-    private val repository: FlightRepository
+    private val getFlightListUseCase: GetFlightListUseCase,
 ) : ViewModel() {
 
     private val _allFlightList = MutableStateFlow<List<FlightInfo>>(emptyList())
@@ -36,9 +35,9 @@ class FlightViewModel @Inject constructor(
     val flightList = combine(_allFlightList, _filter) { flightList, condition ->
         flightList.filter { flight ->
             val statusMatch = condition.flightStatus.isEmpty() ||
-                    condition.flightStatus.any { it.label == flight.flightStatus }
+                    condition.flightStatus.contains(flight.flightStatus)
             val airlineMatch = condition.airlineCode.isEmpty() ||
-                    condition.airlineCode.contains(flight.airlineCode)
+                    condition.airlineCode.contains(flight.airline.code)
 
             statusMatch && airlineMatch
         }
@@ -48,9 +47,7 @@ class FlightViewModel @Inject constructor(
         initialValue = emptyList()
     )
     val airlineList = _allFlightList.map { flightList ->
-        flightList.map { flight ->
-            FlightAirline(flight.airlineCode, flight.airlineName)
-        }.distinct()
+        flightList.map { it.airline }.distinctBy { it.code }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -63,18 +60,21 @@ class FlightViewModel @Inject constructor(
 
     fun loadFlights() {
         viewModelScope.launch {
-            try {
-                val response = repository.getFlightInfo()
+            val result = getFlightListUseCase.invoke()
+            result.onSuccess { flightList ->
+                _allFlightList.value = flightList
+            }.onFailure { error ->
 
-                if (response.isSuccessful) {
-                    _allFlightList.value = response.body()?.instantSchedule ?: emptyList()
-                    error = null
-                } else {
-                    error = "伺服器錯誤，HTTP ${response.code()}"
+                when (error) {
+                    // TODO
+                    is AppException.HttpError -> {}
+
+                    is AppException.NetworkError -> {}
+
+                    is AppException.ApiError -> {}
+
+                    is AppException.UnknownError -> {}
                 }
-            } catch (e: Exception) {
-                Log.d("mTAG_${javaClass.simpleName}", e.toString())
-                error = "取得航班資訊失敗"
             }
         }
     }

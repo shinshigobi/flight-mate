@@ -1,8 +1,7 @@
 package com.example.flightmate.data.repository.flight
 
-import com.example.flightmate.data.model.FlightResponse
-import retrofit2.Response
+import com.example.flightmate.domain.model.flight.FlightInfo
 
 interface FlightRepository {
-    suspend fun getFlightInfo(): Response<FlightResponse>
+    suspend fun getFlightInfo(): Result<List<FlightInfo>>
 }

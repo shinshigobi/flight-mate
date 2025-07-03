@@ -56,7 +56,7 @@ fun FlightFilterDrawer(
                     val isSelected = status in filter.flightStatus
                     FilterChip(
                         selected = isSelected,
-                        label = { Text(status.label) },
+                        label = { Text(status.displayLabel) },
                         onClick = { onToggleStatus(status) },
                         leadingIcon = { ChipLeadingIcon(isSelected) }
                     )
