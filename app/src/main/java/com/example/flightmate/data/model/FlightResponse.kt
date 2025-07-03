@@ -1,7 +1,11 @@
 package com.example.flightmate.data.model
 
+import com.example.flightmate.domain.model.flight.FlightAirline
+import com.example.flightmate.domain.model.flight.FlightStatus
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlin.String
+import com.example.flightmate.domain.model.flight.FlightInfo as FlightInfoDomain
 
 /**
  * 航班資訊。
@@ -70,3 +74,23 @@ data class FlightInfo(
     @Json(name = "airFlyDelayCause")
     val delayCause: String
 )
+
+fun FlightInfo.toDomain(): FlightInfoDomain {
+    return FlightInfoDomain(
+        expectTime = expectTime,
+        realTime = realTime,
+        airline = FlightAirline(
+            code = airlineCode,
+            name = airlineName,
+            logoUrl = airlineLogo,
+            url = airlineUrl,
+            no = airlineNo
+        ),
+        upAirportCode = upAirportCode,
+        upAirportName = upAirportName,
+        airplaneType = airplaneType,
+        airBoardingGate = airBoardingGate,
+        flightStatus = FlightStatus.fromLabel(flightStatus),
+        delayCause = delayCause
+    )
+}
