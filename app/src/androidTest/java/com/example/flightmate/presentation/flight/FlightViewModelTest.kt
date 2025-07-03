@@ -1,6 +1,6 @@
 package com.example.flightmate.presentation.flight
 
-import com.example.flightmate.data.model.FlightInfo
+import com.example.flightmate.data.model.FlightInfoResponse
 import com.example.flightmate.data.model.FlightResponse
 import com.example.flightmate.data.repository.flight.FlightRepository
 import com.example.flightmate.domain.model.flight.FlightStatus
@@ -100,7 +100,7 @@ class FlightViewModelTest {
     }
 }
 
-val mockFlight1 = FlightInfo(
+val mockFlight1 = FlightInfoResponse(
     expectTime = "09:00",
     realTime = "08:50",
     airlineName = "立榮航空",
