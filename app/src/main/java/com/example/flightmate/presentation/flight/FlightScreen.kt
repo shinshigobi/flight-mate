@@ -1,14 +1,19 @@
 package com.example.flightmate.presentation.flight
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,11 +28,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.flightmate.R
+import com.example.flightmate.domain.exception.AppException
+import com.example.flightmate.domain.model.flight.FlightInfo
+import com.example.flightmate.presentation.common.component.ApiErrorContent
+import com.example.flightmate.presentation.common.component.NetworkErrorContent
+import com.example.flightmate.presentation.common.component.UnknownErrorContent
 import com.example.flightmate.presentation.flight.component.FlightCard
 import com.example.flightmate.presentation.flight.component.FlightFilterDrawer
 import kotlinx.coroutines.CoroutineScope
@@ -42,6 +53,7 @@ fun FlightScreen(
     val flightList by viewModel.flightList.collectAsState()
     val filter by viewModel.filter.collectAsState()
     val airlineList by viewModel.airlineList.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -59,23 +71,76 @@ fun FlightScreen(
         }
     ) {
         Scaffold(
-            topBar = { FlightTopBar(coroutineScope, drawerState) },
+            topBar = {
+                FlightTopBar(
+                    coroutineScope = coroutineScope,
+                    drawerState = drawerState,
+                    isFilterVisible = uiState is FlightUiState.Success
+                )
+            },
         ) { padding ->
-            Column(
+            Box(
                 modifier = Modifier
-                    .padding(padding)
-                    .background(MaterialTheme.colorScheme.background)
                     .fillMaxSize()
+                    .fillMaxHeight()
+                    .padding(padding)
             ) {
-                // TODO 篩選列
-                LazyColumn(
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(flightList) { flight ->
-                        FlightCard(flight = flight)
+                when (uiState) {
+                    is FlightUiState.Loading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .width(48.dp)
+                                .align(Alignment.Center)
+                        )
+                    }
+
+                    is FlightUiState.Success -> {
+                        FlightList(flightList)
+                    }
+
+                    is FlightUiState.Error -> {
+                        FlightErrorContent(uiState) {
+                            viewModel.loadFlights()
+                        }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun FlightErrorContent(uiState: FlightUiState, action: () -> Unit) {
+    val error = (uiState as FlightUiState.Error).error
+    when (error) {
+        is AppException.ApiError,
+        is AppException.HttpError -> {
+            ApiErrorContent(action)
+        }
+
+        is AppException.NetworkError -> {
+            NetworkErrorContent(action)
+        }
+
+        is AppException.UnknownError -> {
+            UnknownErrorContent(action)
+        }
+    }
+}
+
+@Composable
+fun FlightList(flightList: List<FlightInfo>) {
+    Column(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxSize()
+    ) {
+        LazyColumn(
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(flightList) { flight ->
+                FlightCard(flight = flight)
             }
         }
     }
@@ -85,18 +150,21 @@ fun FlightScreen(
 @Composable
 fun FlightTopBar(
     coroutineScope: CoroutineScope,
-    drawerState: DrawerState
+    drawerState: DrawerState,
+    isFilterVisible: Boolean
 ) {
     CenterAlignedTopAppBar(
         title = { Text("航班資訊") },
         actions = {
-            IconButton(onClick = {
-                coroutineScope.launch { drawerState.open() }
-            }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_filter_list),
-                    contentDescription = "篩選"
-                )
+            AnimatedVisibility(isFilterVisible) {
+                IconButton(onClick = {
+                    coroutineScope.launch { drawerState.open() }
+                }) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_filter_list),
+                        contentDescription = "篩選"
+                    )
+                }
             }
         }
     )
