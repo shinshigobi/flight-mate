@@ -37,6 +37,7 @@ import com.example.flightmate.R
 import com.example.flightmate.domain.exception.AppException
 import com.example.flightmate.domain.model.flight.FlightInfo
 import com.example.flightmate.presentation.common.component.ApiErrorContent
+import com.example.flightmate.presentation.common.component.ErrorContent
 import com.example.flightmate.presentation.common.component.NetworkErrorContent
 import com.example.flightmate.presentation.common.component.UnknownErrorContent
 import com.example.flightmate.presentation.flight.component.FlightCard
@@ -75,7 +76,9 @@ fun FlightScreen(
                 FlightTopBar(
                     coroutineScope = coroutineScope,
                     drawerState = drawerState,
-                    isFilterVisible = uiState is FlightUiState.Success
+                    isFilterVisible = uiState is FlightUiState.Success &&
+                            flightList.isNotEmpty() &&
+                            !viewModel.isOriginalListEmpty
                 )
             },
         ) { padding ->
@@ -95,7 +98,21 @@ fun FlightScreen(
                     }
 
                     is FlightUiState.Success -> {
-                        FlightList(flightList)
+                        if (flightList.isEmpty()) {
+                            if (viewModel.isOriginalListEmpty) {
+                                FlightEmptyContent {
+                                    viewModel.loadFlights()
+                                }
+                            } else {
+                                FlightFilterEmptyContent {
+                                    coroutineScope.launch {
+                                        drawerState.open()
+                                    }
+                                }
+                            }
+                        } else {
+                            FlightList(flightList)
+                        }
                     }
 
                     is FlightUiState.Error -> {
@@ -167,5 +184,27 @@ fun FlightTopBar(
                 }
             }
         }
+    )
+}
+
+@Composable
+fun FlightEmptyContent(buttonOnClick: () -> Unit) {
+    ErrorContent(
+        title = "目前沒有航班",
+        message = "尚無任何可用的航班資料",
+        iconResId = R.drawable.ic_sentiment_very_dissatisfied,
+        buttonLabel = "重新整理",
+        buttonOnClick = buttonOnClick
+    )
+}
+
+@Composable
+fun FlightFilterEmptyContent(buttonOnClick: () -> Unit) {
+    ErrorContent(
+        title = "無此篩選結果",
+        message = "無法找到符合篩選條件的內容",
+        iconResId = R.drawable.ic_search_off,
+        buttonLabel = "重新篩選",
+        buttonOnClick = buttonOnClick
     )
 }

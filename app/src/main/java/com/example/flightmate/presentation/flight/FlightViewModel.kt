@@ -1,8 +1,5 @@
 package com.example.flightmate.presentation.flight
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.flightmate.domain.exception.AppException
@@ -33,6 +30,8 @@ class FlightViewModel @Inject constructor(
     private val _filter = MutableStateFlow(FlightFilter())
     val filter = _filter.asStateFlow()
 
+    val isOriginalListEmpty: Boolean
+        get() = _allFlightList.value.isEmpty()
     val flightList = combine(_allFlightList, _filter) { flightList, condition ->
         flightList.filter { flight ->
             val statusMatch = condition.flightStatus.isEmpty() ||
