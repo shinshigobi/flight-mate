@@ -25,12 +25,13 @@ class FlightViewModel @Inject constructor(
     private val getFlightListUseCase: GetFlightListUseCase,
 ) : ViewModel() {
 
+    private val _uiState = MutableStateFlow<FlightUiState>(FlightUiState.Loading)
+    val uiState = _uiState.asStateFlow()
+
     private val _allFlightList = MutableStateFlow<List<FlightInfo>>(emptyList())
+
     private val _filter = MutableStateFlow(FlightFilter())
     val filter = _filter.asStateFlow()
-
-    var error by mutableStateOf<String?>(null)
-        private set
 
     val flightList = combine(_allFlightList, _filter) { flightList, condition ->
         flightList.filter { flight ->
@@ -60,21 +61,15 @@ class FlightViewModel @Inject constructor(
 
     fun loadFlights() {
         viewModelScope.launch {
+            _uiState.value = FlightUiState.Loading
+
             val result = getFlightListUseCase.invoke()
             result.onSuccess { flightList ->
                 _allFlightList.value = flightList
+                _uiState.value = FlightUiState.Success
             }.onFailure { error ->
-
-                when (error) {
-                    // TODO
-                    is AppException.HttpError -> {}
-
-                    is AppException.NetworkError -> {}
-
-                    is AppException.ApiError -> {}
-
-                    is AppException.UnknownError -> {}
-                }
+                val error = error as? AppException ?: AppException.UnknownError(error)
+                _uiState.value = FlightUiState.Error(error)
             }
         }
     }
