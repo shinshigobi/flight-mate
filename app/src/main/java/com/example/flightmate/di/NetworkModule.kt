@@ -1,6 +1,9 @@
 package com.example.flightmate.di
 
+import com.example.flightmate.data.remote.CurrencyApi
 import com.example.flightmate.data.remote.FlightApi
+import com.example.flightmate.data.repository.currency.CurrencyRepository
+import com.example.flightmate.data.repository.currency.CurrencyRepositoryImpl
 import com.example.flightmate.data.repository.flight.FlightRepository
 import com.example.flightmate.data.repository.flight.FlightRepositoryImpl
 import com.squareup.moshi.Moshi
@@ -27,7 +30,21 @@ object NetworkModule {
             .build()
 
         return Retrofit.Builder()
-            .baseUrl("https://www.kia.gov.tw/")
+            .baseUrl("https://3135a2c4-43e7-48cf-80bf-ed73e5160ff7.mock.pstmn.io/")
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @Named("currency")
+    fun provideCurrencyRetrofit(): Retrofit {
+        val moshi = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl("https://api.freecurrencyapi.com/")
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
@@ -40,7 +57,19 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideCurrencyApi(@Named("currency") retrofit: Retrofit): CurrencyApi {
+        return retrofit.create(CurrencyApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideFlightRepository(api: FlightApi): FlightRepository {
         return FlightRepositoryImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCurrencyRepository(api: CurrencyApi): CurrencyRepository {
+        return CurrencyRepositoryImpl(api)
     }
 }
