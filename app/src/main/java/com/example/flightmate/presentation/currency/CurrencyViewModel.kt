@@ -2,6 +2,7 @@ package com.example.flightmate.presentation.currency
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.flightmate.domain.exception.AppException
 import com.example.flightmate.domain.model.currency.ConvertedCurrency
 import com.example.flightmate.domain.model.currency.CurrencyInputState
 import com.example.flightmate.domain.usecase.currency.GetExchangeRateUseCase
@@ -20,6 +21,9 @@ class CurrencyViewModel @Inject constructor(
     val getCurrencyDataUseCase: GetExchangeRateUseCase
 ): ViewModel() {
     private val _exchangeRateMap = MutableStateFlow<Map<String, Double>>(emptyMap())
+
+    private val _uiState = MutableStateFlow<CurrencyUiState>(CurrencyUiState.Loading)
+    val uiState = _uiState.asStateFlow()
 
     private val _inputState = MutableStateFlow<CurrencyInputState>(CurrencyInputState())
     val inputState = _inputState.asStateFlow()
@@ -50,6 +54,8 @@ class CurrencyViewModel @Inject constructor(
         baseCurrency: String? = inputState.value.baseCurrency
     ) {
         viewModelScope.launch {
+            _uiState.value = CurrencyUiState.Loading
+
             val result = getCurrencyDataUseCase.invoke(
                 "fca_live_dSqZrcLeMaOu0fAT6mktIAgt136ymgnjd8nLifxv",
                 baseCurrency,
@@ -57,8 +63,10 @@ class CurrencyViewModel @Inject constructor(
             )
             result.onSuccess { exchangeRateMap ->
                 _exchangeRateMap.value = exchangeRateMap
-            }.onFailure {
-                // TODO: Handle error
+                _uiState.value = CurrencyUiState.Success
+            }.onFailure { error ->
+                val error = error as? AppException ?: AppException.UnknownError(error)
+                _uiState.value = CurrencyUiState.Error(error)
             }
         }
     }
