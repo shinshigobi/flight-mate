@@ -59,7 +59,8 @@ class CurrencyViewModel @Inject constructor(
     }
 
     fun updateAmount(amount: String) {
-        _inputState.value = _inputState.value.copy(inputAmount = amount.toDouble())
+        val inputAmount = amount.toDoubleOrNull() ?: 0.0
+        _inputState.value = _inputState.value.copy(inputAmount = inputAmount)
     }
 
     fun mapToConvertedList(

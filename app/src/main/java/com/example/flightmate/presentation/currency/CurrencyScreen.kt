@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.flightmate.presentation.currency.component.CurrencyCard
+import com.example.flightmate.presentation.currency.component.CurrencyInput
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,12 +39,20 @@ fun CurrencyScreen(
             )
         }
     ) { padding ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .fillMaxHeight()
                 .padding(padding)
         ) {
+            Box(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                CurrencyInput(inputState) {
+                    viewModel.updateAmount(it)
+                }
+            }
+
             Column(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background)
