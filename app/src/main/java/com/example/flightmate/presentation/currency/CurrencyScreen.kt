@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -35,7 +36,8 @@ import com.example.flightmate.presentation.currency.component.CurrencyInput
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CurrencyScreen(
-    viewModel: CurrencyViewModel = hiltViewModel()
+    viewModel: CurrencyViewModel = hiltViewModel(),
+    outerPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     val inputState by viewModel.inputState.collectAsState()
     val currencyUiModel by viewModel.currencyUiModel.collectAsState()
@@ -48,13 +50,17 @@ fun CurrencyScreen(
                 title = { Text("幣別換算") }
             )
         }
-    ) { padding ->
+    ) { innerPadding ->
+        val combinedPadding = PaddingValues(
+            top = innerPadding.calculateTopPadding(),
+            bottom = outerPadding.calculateBottomPadding()
+        )
         val focusManager = LocalFocusManager.current
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .fillMaxHeight()
-                .padding(padding)
+                .padding(combinedPadding)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
@@ -68,24 +74,25 @@ fun CurrencyScreen(
                 }
             } else {
                 Box(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxSize()
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        CurrencyInput(
-                            state = inputState,
-                            currencyList = currencyList,
-                            onValueChange = { amountText ->
-                                viewModel.updateAmount(amountText)
-                            },
-                            onCurrencyChange = { currency ->
-                                viewModel.updateBaseCurrency(currency)
-                            }
-                        )
+                    Column{
+                        Box(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            CurrencyInput(
+                                state = inputState,
+                                currencyList = currencyList,
+                                onValueChange = { amountText ->
+                                    viewModel.updateAmount(amountText)
+                                },
+                                onCurrencyChange = { currency ->
+                                    viewModel.updateBaseCurrency(currency)
+                                }
+                            )
+                        }
                         LazyColumn(
+                            contentPadding = PaddingValues(16.dp),
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             items(currencyUiModel.convertedList) { convertedCurrency ->

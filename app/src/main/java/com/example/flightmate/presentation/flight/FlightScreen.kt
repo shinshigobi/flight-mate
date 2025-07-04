@@ -30,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,7 +48,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun FlightScreen(
-    viewModel: FlightViewModel = hiltViewModel()
+    viewModel: FlightViewModel = hiltViewModel(),
+    outerPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
@@ -81,12 +83,16 @@ fun FlightScreen(
                             !viewModel.isOriginalListEmpty
                 )
             },
-        ) { padding ->
+        ) { innerPadding ->
+            val combinedPadding = PaddingValues(
+                top = innerPadding.calculateTopPadding(),
+                bottom = outerPadding.calculateBottomPadding()
+            )
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .fillMaxHeight()
-                    .padding(padding)
+                    .padding(combinedPadding)
             ) {
                 when (uiState) {
                     is FlightUiState.Loading -> {

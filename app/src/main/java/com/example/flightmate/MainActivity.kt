@@ -31,8 +31,10 @@ class MainActivity : ComponentActivity() {
                         BottomBar(navController, items)
                     }
                 ) { padding ->
-                    // TODO use padding
-                    AppNavHost(navController = navController)
+                    AppNavHost(
+                        navController = navController,
+                        padding = padding
+                    )
                 }
             }
         }
