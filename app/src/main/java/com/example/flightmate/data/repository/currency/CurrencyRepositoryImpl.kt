@@ -2,6 +2,7 @@ package com.example.flightmate.data.repository.currency
 
 import android.util.Log
 import com.example.flightmate.data.remote.CurrencyApi
+import com.example.flightmate.domain.config.currency.CurrencyConfig
 import com.example.flightmate.domain.exception.AppException
 import com.squareup.moshi.JsonDataException
 import java.io.IOException
@@ -15,6 +16,7 @@ class CurrencyRepositoryImpl(
         currencies: String?
     ): Result<Map<String, Double>> {
         return try {
+            val currencies = currencies.takeIf { !it.isNullOrEmpty() } ?: CurrencyConfig.supportedCurrencies.joinToString(",")
             val response = api.getExchangeRateData(apiKey, baseCurrency, currencies)
             if (response.isSuccessful) {
                 val exchangeRateMap = response.body()?.exchangeRateMap ?: emptyMap()
