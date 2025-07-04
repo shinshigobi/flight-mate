@@ -78,7 +78,10 @@ fun CurrencyInput(
                         text = newText
                         onValueChange(newText)
                     },
-                    textStyle = LocalTextStyle.current.copy(fontSize = 14.sp),
+                    textStyle = LocalTextStyle.current.copy(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = 14.sp
+                    ),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
             }
