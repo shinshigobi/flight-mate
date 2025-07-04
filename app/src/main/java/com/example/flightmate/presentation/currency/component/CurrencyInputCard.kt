@@ -65,6 +65,7 @@ fun CurrencyInput(
                 modifier = Modifier.padding(16.dp),
                 verticalAlignment = Alignment.Bottom
             ) {
+                var text by remember { mutableStateOf(state.inputAmount.toString()) }
                 Text(
                     text = "金額",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -72,8 +73,11 @@ fun CurrencyInput(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 BasicTextField(
-                    value = state.inputAmount.toString(),
-                    onValueChange = onValueChange,
+                    value = text,
+                    onValueChange = { newText ->
+                        text = newText
+                        onValueChange(newText)
+                    },
                     textStyle = LocalTextStyle.current.copy(fontSize = 14.sp),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
