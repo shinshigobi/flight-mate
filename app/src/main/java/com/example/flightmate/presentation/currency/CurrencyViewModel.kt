@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,16 +34,25 @@ class CurrencyViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = CurrencyUiModel(CurrencyInputState(), emptyList())
     )
+    val currencyList = _exchangeRateMap.map { exchangeRateMap ->
+        exchangeRateMap.keys.toList()
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = listOf()
+    )
 
     init {
         loadCurrencies()
     }
 
-    fun loadCurrencies() {
+    fun loadCurrencies(
+        baseCurrency: String? = inputState.value.baseCurrency
+    ) {
         viewModelScope.launch {
             val result = getCurrencyDataUseCase.invoke(
                 "fca_live_dSqZrcLeMaOu0fAT6mktIAgt136ymgnjd8nLifxv",
-                null,
+                baseCurrency,
                 null
             )
             result.onSuccess { exchangeRateMap ->
@@ -53,9 +63,9 @@ class CurrencyViewModel @Inject constructor(
         }
     }
 
-    fun changeBaseCurrency(currencyCode: String) {
+    fun updateBaseCurrency(currencyCode: String) {
         _inputState.value = _inputState.value.copy(baseCurrency = currencyCode)
-        // TODO fetch api
+        loadCurrencies(currencyCode)
     }
 
     fun updateAmount(amount: String) {
