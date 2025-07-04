@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -25,6 +26,7 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,11 +45,11 @@ fun CurrencyInput(
     ) {
         Card(
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
             ),
             border = BorderStroke(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.outline
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             ),
             modifier = Modifier.weight(1f)
         ) {
@@ -64,7 +66,8 @@ fun CurrencyInput(
                 BasicTextField(
                     value = state.inputAmount.toString(),
                     onValueChange = onValueChange,
-                    textStyle = LocalTextStyle.current.copy(fontSize = 16.sp),
+                    textStyle = LocalTextStyle.current.copy(fontSize = 14.sp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
             }
         }
@@ -75,13 +78,13 @@ fun CurrencyInput(
         )
         Card(
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
             ),
             border = BorderStroke(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.outline
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             ),
-            modifier = Modifier.weight(0.4f)
+            modifier = Modifier.weight(0.5f)
         ) {
             Row(
                 modifier = Modifier.padding(16.dp),
@@ -89,7 +92,7 @@ fun CurrencyInput(
             ) {
                 Text(
                     text = state.baseCurrency,
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     modifier = Modifier.weight(1f)
                 )
                 IconButton(
@@ -117,11 +120,11 @@ fun CurrencyInput() {
     ) {
         Card(
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
             ),
             border = BorderStroke(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.outline
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             ),
             modifier = Modifier.weight(1f)
         ) {
@@ -137,7 +140,7 @@ fun CurrencyInput() {
                 Spacer(modifier = Modifier.width(8.dp))
                 BasicTextField(
                     state = rememberTextFieldState(initialText = "1,000"),
-                    textStyle = LocalTextStyle.current.copy(fontSize = 16.sp),
+                    textStyle = LocalTextStyle.current.copy(fontSize = 14.sp),
                 )
             }
         }
@@ -148,13 +151,13 @@ fun CurrencyInput() {
         )
         Card(
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
             ),
             border = BorderStroke(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.outline
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             ),
-            modifier = Modifier.weight(0.4f)
+            modifier = Modifier.weight(0.5f)
         ) {
             Row(
                 modifier = Modifier.padding(16.dp),
@@ -162,7 +165,7 @@ fun CurrencyInput() {
             ) {
                 Text(
                     text = "USA",
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     modifier = Modifier.weight(1f)
                 )
                 IconButton(
