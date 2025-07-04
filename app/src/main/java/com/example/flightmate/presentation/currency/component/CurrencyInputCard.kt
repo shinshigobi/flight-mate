@@ -17,6 +17,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
@@ -24,6 +26,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,7 +41,9 @@ import com.example.flightmate.domain.model.currency.CurrencyInputState
 @Composable
 fun CurrencyInput(
     state: CurrencyInputState,
-    onValueChange: (String) -> Unit
+    currencyList: List<String>,
+    onValueChange: (String) -> Unit,
+    onCurrencyChange: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -90,6 +98,7 @@ fun CurrencyInput(
                 modifier = Modifier.padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                var isMenuExpanded by remember { mutableStateOf(false) }
                 Text(
                     text = state.baseCurrency,
                     fontSize = 14.sp,
@@ -97,12 +106,28 @@ fun CurrencyInput(
                 )
                 IconButton(
                     modifier = Modifier.size(24.dp),
-                    onClick = {}
+                    onClick = {
+                        isMenuExpanded = !isMenuExpanded
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
                         contentDescription = null
                     )
+                    DropdownMenu(
+                        expanded = isMenuExpanded,
+                        onDismissRequest = { isMenuExpanded = false }
+                    ) {
+                        currencyList.forEach { currency ->
+                            DropdownMenuItem(
+                                text = { Text(currency) },
+                                onClick = {
+                                    onCurrencyChange(currency)
+                                    isMenuExpanded = false
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -163,6 +188,7 @@ fun CurrencyInput() {
                 modifier = Modifier.padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val currencyList = listOf("USA", "JPY", "TWD")
                 Text(
                     text = "USA",
                     fontSize = 14.sp,
@@ -176,6 +202,17 @@ fun CurrencyInput() {
                         imageVector = Icons.Default.ArrowDropDown,
                         contentDescription = null
                     )
+                    DropdownMenu(
+                        expanded = true,
+                        onDismissRequest = {}
+                    ) {
+                        currencyList.forEach { currency ->
+                            DropdownMenuItem(
+                                text = { Text(currency) },
+                                onClick = {}
+                            )
+                        }
+                    }
                 }
             }
         }

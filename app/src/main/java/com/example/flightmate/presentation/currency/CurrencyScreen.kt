@@ -31,6 +31,7 @@ fun CurrencyScreen(
 ) {
     val inputState by viewModel.inputState.collectAsState()
     val currencyUiModel by viewModel.currencyUiModel.collectAsState()
+    val currencyList by viewModel.currencyList.collectAsState()
 
     Scaffold(
         topBar = {
@@ -48,9 +49,16 @@ fun CurrencyScreen(
             Box(
                 modifier = Modifier.padding(16.dp)
             ) {
-                CurrencyInput(inputState) {
-                    viewModel.updateAmount(it)
-                }
+                CurrencyInput(
+                    state = inputState,
+                    currencyList = currencyList,
+                    onValueChange = { amountText ->
+                        viewModel.updateAmount(amountText)
+                    },
+                    onCurrencyChange = { currency ->
+                        viewModel.updateBaseCurrency(currency)
+                    }
+                )
             }
 
             Column(
