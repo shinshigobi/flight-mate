@@ -23,9 +23,11 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.flightmate.R
 import com.example.flightmate.domain.model.flight.FlightAirline
 import com.example.flightmate.domain.model.flight.FlightFilter
 import com.example.flightmate.domain.model.flight.FlightStatus
@@ -43,7 +45,7 @@ fun FlightFilterDrawer(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "班機狀態",
+                text = stringResource(R.string.flight_status),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold
@@ -64,7 +66,7 @@ fun FlightFilterDrawer(
             }
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             Text(
-                text = "航空公司",
+                text = stringResource(R.string.airline),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold

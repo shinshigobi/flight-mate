@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,13 +59,13 @@ fun FlightCard(flight: FlightInfo) {
             HorizontalDivider()
             Row(modifier = rowModifier) {
                 FlightTime(
-                    label = "預計時間",
+                    label = stringResource(R.string.expected_time),
                     content = flight.expectTime,
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 FlightTime(
-                    label = "實際時間",
+                    label = stringResource(R.string.actual_time),
                     content = flight.realTime,
                     modifier = Modifier.weight(1f)
                 )
@@ -83,7 +84,7 @@ fun FlightCard(flight: FlightInfo) {
                 if (flight.airBoardingGate.isNotBlank()) {
                     IconTextRow(
                         iconResId = R.drawable.ic_door_front,
-                        text = "登機門．${flight.airBoardingGate}",
+                        text = stringResource(R.string.boarding_gate) + "．" + flight.airBoardingGate,
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -147,7 +148,7 @@ fun FlightAirlineInfo(
 
         AsyncImage(
             model = logoUrl,
-            contentDescription = "$airlineName Logo",
+            contentDescription = airlineName + stringResource(R.string.logo),
             modifier = Modifier
                 .size(24.dp)
                 .clip(CircleShape)

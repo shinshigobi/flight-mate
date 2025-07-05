@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">FlightMate</string>
+    <string name="expected_time">預計時間</string>
+    <string name="actual_time">實際時間</string>
+    <string name="boarding_gate">登機門</string>
+    <string name="flight_status">班機狀態</string>
+    <string name="airline">航空公司</string>
+    <string name="logo">logo</string>
     <string name="retry">重新嘗試</string>
     <string name="server_error_title">伺服器錯誤</string>
     <string name="server_error_msg">目前伺服器異常，請稍後再試。</string>
