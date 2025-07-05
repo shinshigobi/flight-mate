@@ -27,7 +27,7 @@ data class FlightResponse(
  * @param airlineCode 航空公司代號。
  * @param airlineLogo 航空公司標誌。
  * @param airlineUrl 航空公司網址。
- * @param airlineNo 航空公司編號。
+ * @param airlineNo 航班編號。
  * @param upAirportCode 起飛機場代號。
  * @param upAirportName 起飛機場名稱。
  * @param airplaneType 機型。

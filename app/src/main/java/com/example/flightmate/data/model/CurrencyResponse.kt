@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 /**
  * 匯率資訊。
  *
- * @param exchangeRateMap 基於基礎幣值的各幣值匯率。
+ * @param exchangeRateMap 基於基準幣別的各幣別匯率。
  */
 @JsonClass(generateAdapter = true)
 data class CurrencyResponse(
