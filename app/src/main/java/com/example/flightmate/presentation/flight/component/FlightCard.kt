@@ -31,6 +31,12 @@ import coil.compose.AsyncImage
 import com.example.flightmate.R
 import com.example.flightmate.domain.model.flight.FlightInfo
 
+/**
+ * 航班資訊卡片。
+ *
+ * @param flight 航班資訊。
+ * @param modifier Composable 修飾符。
+ */
 @Composable
 fun FlightCard(
     flight: FlightInfo,

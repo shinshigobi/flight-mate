@@ -32,6 +32,14 @@ import com.example.flightmate.domain.model.flight.FlightAirline
 import com.example.flightmate.domain.model.flight.FlightFilter
 import com.example.flightmate.domain.model.flight.FlightStatus
 
+/**
+ * 航班篩選側邊欄，提供篩選航班狀態與航空公司。
+ *
+ * @param filter 當前的篩選條件。
+ * @param airlineList 可供選擇的航空公司列表。
+ * @param onToggleStatus 切換航班狀態篩選條件的回調函式。
+ * @param onToggleAirline 切換航空公司篩選條件的回調函式（以航空公司代碼識別）。
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FlightFilterDrawer(
