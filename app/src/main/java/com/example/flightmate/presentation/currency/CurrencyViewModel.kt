@@ -25,7 +25,7 @@ class CurrencyViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<CurrencyUiState>(CurrencyUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val _inputState = MutableStateFlow<CurrencyInputState>(CurrencyInputState())
+    private val _inputState = MutableStateFlow(CurrencyInputState())
     val inputState = _inputState.asStateFlow()
 
     val currencyUiModel = combine(
