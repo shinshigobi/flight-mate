@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">FlightMate</string>
+    <string name="flight">航班</string>
     <string name="flight_info">航班資訊</string>
     <string name="expected_time">預計時間</string>
     <string name="actual_time">實際時間</string>
@@ -8,6 +9,7 @@
     <string name="airline">航空公司</string>
     <string name="logo">logo</string>
     <string name="filter">篩選</string>
+    <string name="exchange_rate">匯率</string>
     <string name="convert_currency">幣別換算</string>
     <string name="amount">金額</string>
     <string name="flight_empty_result_title">目前沒有航班</string>

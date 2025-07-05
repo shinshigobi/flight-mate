@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Scaffold
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
 import com.example.flightmate.presentation.common.component.BottomBar
 import com.example.flightmate.presentation.common.component.BottomNavItem
@@ -22,8 +23,8 @@ class MainActivity : ComponentActivity() {
             FlightMateTheme(dynamicColor = false) {
                 val navController = rememberNavController()
                 val items = listOf(
-                    BottomNavItem(Screen.Flight, "航班", R.drawable.ic_travel),
-                    BottomNavItem(Screen.Currency, "匯率", R.drawable.ic_currency_exchange)
+                    BottomNavItem(Screen.Flight, stringResource(R.string.flight), R.drawable.ic_travel),
+                    BottomNavItem(Screen.Currency, stringResource(R.string.exchange_rate), R.drawable.ic_currency_exchange)
                 )
 
                 Scaffold(
