@@ -24,17 +24,17 @@ import javax.inject.Inject
 class FlightViewModel @Inject constructor(
     private val getFlightListUseCase: GetFlightListUseCase,
 ) : ViewModel() {
+    private val _allFlightList = MutableStateFlow<List<FlightInfo>>(emptyList())
 
     private val _uiState = MutableStateFlow<FlightUiState>(FlightUiState.Loading)
     val uiState = _uiState.asStateFlow()
-
-    private val _allFlightList = MutableStateFlow<List<FlightInfo>>(emptyList())
 
     private val _filter = MutableStateFlow(FlightFilter())
     val filter = _filter.asStateFlow()
 
     val isOriginalListEmpty: Boolean
         get() = _allFlightList.value.isEmpty()
+
     val flightList = combine(_allFlightList, _filter) { flightList, condition ->
         flightList.filter { flight ->
             val statusMatch = condition.flightStatus.isEmpty() ||

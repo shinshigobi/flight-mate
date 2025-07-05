@@ -1,6 +1,5 @@
 package com.example.flightmate.data.repository.currency
 
-import android.util.Log
 import com.example.flightmate.BuildConfig
 import com.example.flightmate.data.remote.CurrencyApi
 import com.example.flightmate.domain.config.currency.CurrencyConfig
@@ -35,7 +34,6 @@ class CurrencyRepositoryImpl(
         } catch (e: IOException) {
             Result.failure(AppException.NetworkError)
         } catch (e: Exception) {
-            Log.d("mTAG_${javaClass.simpleName}", e.toString())
             Result.failure(AppException.UnknownError(e))
         }
     }
