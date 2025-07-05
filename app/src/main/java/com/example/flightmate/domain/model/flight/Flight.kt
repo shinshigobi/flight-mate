@@ -14,6 +14,8 @@ enum class FlightStatus(val label: String, val displayLabel: String) {
 }
 
 /**
+ * 航班資訊。
+ *
  * @param expectTime 預計時間。
  * @param realTime 實際時間。
  * @param airline 航空公司資訊。
@@ -36,6 +38,15 @@ data class FlightInfo(
     val delayCause: String
 )
 
+/**
+ * 航空公司資訊。
+ *
+ * @param code 航空公司名稱。
+ * @param name 航空公司代號。
+ * @param logoUrl 航空公司標誌。
+ * @param url 航空公司網址。
+ * @param no 航班編號。
+ */
 data class FlightAirline(
     val code: String,
     val name: String,
