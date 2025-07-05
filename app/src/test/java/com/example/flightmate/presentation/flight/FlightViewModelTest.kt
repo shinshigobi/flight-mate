@@ -4,6 +4,7 @@ import com.example.flightmate.data.model.FlightInfoResponse
 import com.example.flightmate.data.model.FlightResponse
 import com.example.flightmate.data.repository.flight.FlightRepository
 import com.example.flightmate.domain.model.flight.FlightStatus
+import com.example.flightmate.presentation.flight.FlightViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
