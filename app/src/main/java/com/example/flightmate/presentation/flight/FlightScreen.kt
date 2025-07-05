@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.flightmate.R
@@ -177,7 +178,7 @@ fun FlightTopBar(
     isFilterVisible: Boolean
 ) {
     CenterAlignedTopAppBar(
-        title = { Text("航班資訊") },
+        title = { Text(stringResource(R.string.flight_info)) },
         actions = {
             AnimatedVisibility(isFilterVisible) {
                 IconButton(onClick = {
@@ -185,7 +186,7 @@ fun FlightTopBar(
                 }) {
                     Icon(
                         painter = painterResource(R.drawable.ic_filter_list),
-                        contentDescription = "篩選"
+                        contentDescription = stringResource(R.string.filter)
                     )
                 }
             }
@@ -196,10 +197,10 @@ fun FlightTopBar(
 @Composable
 fun FlightEmptyContent(buttonOnClick: () -> Unit) {
     ErrorContent(
-        title = "目前沒有航班",
-        message = "尚無任何可用的航班資料",
+        title = stringResource(R.string.flight_empty_result_title),
+        message = stringResource(R.string.flight_empty_result_msg),
         iconResId = R.drawable.ic_sentiment_very_dissatisfied,
-        buttonLabel = "重新整理",
+        buttonLabel = stringResource(R.string.retry),
         buttonOnClick = buttonOnClick
     )
 }
@@ -207,10 +208,10 @@ fun FlightEmptyContent(buttonOnClick: () -> Unit) {
 @Composable
 fun FlightFilterEmptyContent(buttonOnClick: () -> Unit) {
     ErrorContent(
-        title = "無此篩選結果",
-        message = "無法找到符合篩選條件的內容",
+        title = stringResource(R.string.filter_empty_result_title),
+        message = stringResource(R.string.filter_empty_result_msg),
         iconResId = R.drawable.ic_search_off,
-        buttonLabel = "重新篩選",
+        buttonLabel = stringResource(R.string.retry_filter),
         buttonOnClick = buttonOnClick
     )
 }
