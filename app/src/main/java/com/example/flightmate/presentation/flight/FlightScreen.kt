@@ -26,16 +26,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.flightmate.R
 import com.example.flightmate.domain.exception.AppException
 import com.example.flightmate.domain.model.flight.FlightInfo
@@ -59,6 +61,19 @@ fun FlightScreen(
     val filter by viewModel.filter.collectAsState()
     val airlineList by viewModel.airlineList.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    // 啟動自動重新整理
+    LaunchedEffect(Unit) {
+        viewModel.autoRefresh()
+    }
+
+    // 離開畫面時取消自動重新整理
+    DisposableEffect(lifecycleOwner) {
+        onDispose {
+            viewModel.cancelRefresh()
+        }
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -109,7 +124,7 @@ fun FlightScreen(
                         if (flightList.isEmpty()) {
                             if (viewModel.isOriginalListEmpty) {
                                 FlightEmptyContent {
-                                    viewModel.loadFlights()
+                                    viewModel.manualRefresh()
                                 }
                             } else {
                                 FlightFilterEmptyContent {
@@ -125,7 +140,7 @@ fun FlightScreen(
 
                     is FlightUiState.Error -> {
                         FlightErrorContent(uiState) {
-                            viewModel.loadFlights()
+                            viewModel.manualRefresh()
                         }
                     }
                 }
