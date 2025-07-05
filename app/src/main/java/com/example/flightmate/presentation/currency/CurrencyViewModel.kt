@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CurrencyViewModel @Inject constructor(
-    val getCurrencyDataUseCase: GetExchangeRateUseCase
+    private val getCurrencyDataUseCase: GetExchangeRateUseCase
 ): ViewModel() {
     private val _exchangeRateMap = MutableStateFlow<Map<String, Double>>(emptyMap())
 
@@ -82,7 +82,7 @@ class CurrencyViewModel @Inject constructor(
         }
     }
 
-    fun mapToConvertedList(
+    private fun mapToConvertedList(
         rateMap: Map<String, Double>,
         input: CurrencyInputState
     ): List<ConvertedCurrency> {
