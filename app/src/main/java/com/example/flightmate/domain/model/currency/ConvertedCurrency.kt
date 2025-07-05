@@ -23,13 +23,13 @@ data class ConvertedCurrency(
         get() = convertedAmount.toCurrencyDisplay()
 
     // 將匯率格式化取小數點後三位且最多三位
-    fun Double.toExchangeRateDisplay(): String {
+    private fun Double.toExchangeRateDisplay(): String {
         val format = DecimalFormat("#.###") //
         return format.format(this)
     }
 
     // 將金額格式化成千分位，顯示小數點後三位
-    fun Double.toCurrencyDisplay(): String {
+    private fun Double.toCurrencyDisplay(): String {
         val format = NumberFormat.getNumberInstance(Locale.US).apply {
             minimumFractionDigits = 3
             maximumFractionDigits = 3
