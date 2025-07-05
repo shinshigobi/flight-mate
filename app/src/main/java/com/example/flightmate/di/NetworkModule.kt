@@ -30,7 +30,7 @@ object NetworkModule {
             .build()
 
         return Retrofit.Builder()
-            .baseUrl("https://3135a2c4-43e7-48cf-80bf-ed73e5160ff7.mock.pstmn.io/")
+            .baseUrl("https://www.kia.gov.tw/")
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
