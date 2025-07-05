@@ -1,10 +1,9 @@
 package com.example.flightmate.presentation.flight
 
-import com.example.flightmate.data.model.FlightInfoResponse
-import com.example.flightmate.data.model.FlightResponse
-import com.example.flightmate.data.repository.flight.FlightRepository
+import com.example.flightmate.domain.model.flight.FlightAirline
+import com.example.flightmate.domain.model.flight.FlightInfo
 import com.example.flightmate.domain.model.flight.FlightStatus
-import com.example.flightmate.presentation.flight.FlightViewModel
+import com.example.flightmate.domain.usecase.GetFlightListUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -17,21 +16,23 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import retrofit2.Response
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FlightViewModelTest {
 
     private lateinit var viewModel: FlightViewModel
-    private lateinit var mockRepository: MockFlightRepository
+    private lateinit var fakeUseCase: FakeGetFlightListUseCase
 
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        mockRepository = MockFlightRepository()
-        viewModel = FlightViewModel(mockRepository)
+        fakeUseCase = FakeGetFlightListUseCase()
+        viewModel = FlightViewModel(fakeUseCase)
+        viewModel.manualRefresh()
+        testDispatcher.scheduler.runCurrent()
+        viewModel.cancelRefresh()
     }
 
     @After
@@ -42,10 +43,8 @@ class FlightViewModelTest {
     @Test
     fun flightList_filters_by_status() = runTest {
         // Arrange
-        val expected = listOf(mockFlight1, mockFlight2) // 只有延遲的航班
-        val job = launch {
-            viewModel.flightList.collect { }
-        }
+        val expected = listOf(fakeFlight1, fakeFlight2) // 只有延遲的航班
+        val job = launch { viewModel.flightList.collect {} }
 
         // Act
         viewModel.filterByStatus(FlightStatus.DELAYED)
@@ -62,10 +61,8 @@ class FlightViewModelTest {
     @Test
     fun flightList_filters_by_airline() = runTest {
         // Arrange
-        val expected = listOf(mockFlight2)
-        val job = launch {
-            viewModel.flightList.collect { }
-        }
+        val expected = listOf(fakeFlight2)
+        val job = launch { viewModel.flightList.collect {} }
 
         // Act
         viewModel.filterByAirline("MDA")
@@ -82,10 +79,8 @@ class FlightViewModelTest {
     @Test
     fun flightList_filters_by_both_airline_and_status() = runTest {
         // Arrange
-        val expected = listOf(mockFlight1)
-        val job = launch {
-            viewModel.flightList.collect { }
-        }
+        val expected = listOf(fakeFlight2)
+        val job = launch { viewModel.flightList.collect {} }
 
         // Act
         viewModel.filterByStatus(FlightStatus.DELAYED)
@@ -101,36 +96,47 @@ class FlightViewModelTest {
     }
 }
 
-val mockFlight1 = FlightInfoResponse(
+val fakeFlight1 = FlightInfo(
     expectTime = "09:00",
     realTime = "08:50",
-    airlineName = "立榮航空",
-    airlineCode = "UIA",
-    airlineLogo = "",
-    airlineUrl = "",
-    airlineNo = "B78690",
+    airline = FlightAirline(
+        code = "UIA",
+        name = "立榮航空",
+        logoUrl = "",
+        url = "",
+        no = "B78690",
+    ),
     upAirportCode = "MZG",
     upAirportName = "澎湖",
     airplaneType = "AT76",
     airBoardingGate = "",
-    flightStatus = "延遲Delayed",
+    flightStatus = FlightStatus.DELAYED,
     delayCause = ""
 )
 
-val mockFlight2 = mockFlight1.copy(
-    airlineCode = "MDA",
-    airlineNo = "AE334",
-    flightStatus = "延遲Delayed"
+val fakeFlight2 = fakeFlight1.copy(
+    airline = FlightAirline(
+        code = "MDA",
+        name = "華信航空",
+        logoUrl = "",
+        url = "",
+        no = "AE334",
+    )
 )
 
-val mockFlight3 = mockFlight1.copy(
-    airlineCode = "UIA",
-    airlineNo = "AT76",
-    flightStatus = "準時On Time"
+val fakeFlight3 = fakeFlight1.copy(
+    airline = FlightAirline(
+        code = "UIA",
+        name = "立榮航空",
+        logoUrl = "",
+        url = "",
+        no = "AT76",
+    ),
+    flightStatus = FlightStatus.ON_TIME
 )
 
-class MockFlightRepository : FlightRepository {
-    override suspend fun getFlightInfo(): Response<FlightResponse> {
-        return Response.success(FlightResponse(listOf(mockFlight1, mockFlight2, mockFlight3)))
+class FakeGetFlightListUseCase : GetFlightListUseCase {
+    override suspend fun invoke(): Result<List<FlightInfo>> {
+        return Result.success(listOf(fakeFlight1, fakeFlight2, fakeFlight3))
     }
 }
