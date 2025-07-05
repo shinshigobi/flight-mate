@@ -25,6 +25,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.flightmate.R
 
+/**
+ * 用於顯示錯誤狀態的元件。
+ *
+ * @param title 標題。
+ * @param message 錯誤訊息。
+ * @param buttonLabel 按鈕標籤。
+ * @param buttonOnClick 按鈕的點擊事件。
+ * @param iconResId 圖標的資源 ID。
+ */
 @Composable
 fun ErrorContent(
     title: String,
