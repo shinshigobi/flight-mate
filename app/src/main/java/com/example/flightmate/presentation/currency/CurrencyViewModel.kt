@@ -63,8 +63,8 @@ class CurrencyViewModel @Inject constructor(
             result.onSuccess { exchangeRateMap ->
                 _exchangeRateMap.value = exchangeRateMap
                 _uiState.value = CurrencyUiState.Success
-            }.onFailure { error ->
-                val error = error as? AppException ?: AppException.UnknownError(error)
+            }.onFailure { throwable ->
+                val error = throwable as? AppException ?: AppException.UnknownError(throwable)
                 _uiState.value = CurrencyUiState.Error(error)
             }
         }

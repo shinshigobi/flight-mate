@@ -108,8 +108,8 @@ class FlightViewModel @Inject constructor(
                 _uiState.value = FlightUiState.Success
                 true
             },
-            onFailure = { error ->
-                val error = error as? AppException ?: AppException.UnknownError(error)
+            onFailure = { throwable ->
+                val error = throwable as? AppException ?: AppException.UnknownError(throwable)
                 _uiState.value = FlightUiState.Error(error)
                 false
             }

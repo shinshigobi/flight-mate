@@ -16,8 +16,8 @@ class CurrencyRepositoryImpl(
     ): Result<Map<String, Double>> {
         return try {
             val apiKey = BuildConfig.EXCHANGE_RATE_API_KEY
-            val currencies = currencies.takeIf { !it.isNullOrEmpty() } ?: CurrencyConfig.supportedCurrencies.joinToString(",")
-            val response = api.getExchangeRateData(apiKey, baseCurrency, currencies)
+            val availableCurrencies = currencies.takeIf { !it.isNullOrEmpty() } ?: CurrencyConfig.supportedCurrencies.joinToString(",")
+            val response = api.getExchangeRateData(apiKey, baseCurrency, availableCurrencies)
             if (response.isSuccessful) {
                 val exchangeRateMap = response.body()?.exchangeRateMap ?: emptyMap()
                 Result.success(exchangeRateMap)
