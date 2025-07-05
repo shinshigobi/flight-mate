@@ -24,8 +24,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.flightmate.R
 import com.example.flightmate.domain.exception.AppException
 import com.example.flightmate.presentation.common.component.ApiErrorContent
 import com.example.flightmate.presentation.common.component.NetworkErrorContent
@@ -47,7 +49,7 @@ fun CurrencyScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("幣別換算") }
+                title = { Text(stringResource(R.string.convert_currency)) }
             )
         }
     ) { innerPadding ->

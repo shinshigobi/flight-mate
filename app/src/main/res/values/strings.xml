@@ -8,6 +8,8 @@
     <string name="airline">航空公司</string>
     <string name="logo">logo</string>
     <string name="filter">篩選</string>
+    <string name="convert_currency">幣別換算</string>
+    <string name="amount">金額</string>
     <string name="flight_empty_result_title">目前沒有航班</string>
     <string name="flight_empty_result_msg">尚無任何可用的航班資料。</string>
     <string name="filter_empty_result_title">無此篩選結果</string>
