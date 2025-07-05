@@ -1,3 +1,12 @@
+import java.io.FileInputStream
+import java.util.Properties
+
+val localProperties = project.rootProject.file("local.properties")
+val properties = Properties().apply {
+    load(FileInputStream(localProperties))
+}
+val exchangeRateApiKey = properties["EXCHANGE_RATE_API_KEY"] as String
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -18,6 +27,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            type = "String",
+            name = "EXCHANGE_RATE_API_KEY",
+            value = exchangeRateApiKey
+        )
     }
 
     buildTypes {
@@ -38,6 +53,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
