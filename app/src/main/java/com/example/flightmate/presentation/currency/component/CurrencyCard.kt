@@ -19,6 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.flightmate.domain.model.currency.ConvertedCurrency
 
+/**
+ * 貨幣資訊卡片，顯示該幣值基於基準幣值的匯率及轉換過的金額。
+ *
+ * @param currency 貨幣資訊。
+ * @param modifier Composable 修飾符。
+ */
 @Composable
 fun CurrencyCard(
     currency: ConvertedCurrency,

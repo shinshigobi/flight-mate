@@ -40,6 +40,14 @@ import androidx.compose.ui.unit.sp
 import com.example.flightmate.R
 import com.example.flightmate.domain.model.currency.CurrencyInputState
 
+/**
+ * 幣值輸入欄位，包含輸入金額與選擇基準幣別的功能。
+ *
+ * @param state 當前輸入狀態，包含金額與選擇的幣別。
+ * @param currencyList 可供選擇的幣別列表。
+ * @param onValueChange 當金額變更時呼叫的回調函式。
+ * @param onCurrencyChange 當幣別變更時呼叫的回調函式。
+ */
 @Composable
 fun CurrencyInput(
     state: CurrencyInputState,
