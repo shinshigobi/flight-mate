@@ -14,6 +14,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -89,6 +90,83 @@ class FlightViewModelTest {
 
         // Assert
         val result = viewModel.flightList.value
+        assertEquals(expected, result)
+
+        // Tear down
+        job.cancel()
+    }
+
+    @Test
+    fun flightList_returns_all_when_no_filter_applied() = runTest {
+        // Arrange
+        val expected = listOf(fakeFlight1, fakeFlight2, fakeFlight3)
+        val job = launch { viewModel.flightList.collect {} }
+
+        // Act: no filter applied
+        advanceUntilIdle()
+
+        // Assert
+        val result = viewModel.flightList.value
+        assertEquals(expected, result)
+
+        // Tear down
+        job.cancel()
+    }
+
+    @Test
+    fun flightList_returns_empty_when_no_match() = runTest {
+        // Arrange
+        val job = launch { viewModel.flightList.collect {} }
+
+        // Act
+        viewModel.filterByStatus(FlightStatus.DELAYED)
+        viewModel.filterByAirline("ZZZ")
+        advanceUntilIdle()
+
+        // Assert
+        val result = viewModel.flightList.value
+        assertTrue(result.isEmpty())
+
+        // Tear down
+        job.cancel()
+    }
+
+    @Test
+    fun flightList_returns_all_when_filters_cleared() = runTest {
+        // Arrange
+        val expected = listOf(fakeFlight1, fakeFlight2, fakeFlight3)
+        val job = launch { viewModel.flightList.collect {} }
+
+        // Act
+        // 先設定
+        viewModel.filterByStatus(FlightStatus.DELAYED)
+        viewModel.filterByAirline("MDA")
+        advanceUntilIdle()
+
+        // 再取消
+        viewModel.filterByStatus(FlightStatus.DELAYED)
+        viewModel.filterByAirline("MDA")
+        advanceUntilIdle()
+
+        // Assert
+        val result = viewModel.flightList.value
+        assertEquals(expected, result)
+
+        // Tear down
+        job.cancel()
+    }
+
+    @Test
+    fun airlineList_returns_distinct_airlines() = runTest {
+        // Arrange
+        val expected = listOf(fakeFlight1.airline, fakeFlight2.airline)
+        val job = launch { viewModel.airlineList.collect {} }
+
+        // Act
+        advanceUntilIdle()
+
+        // Assert
+        val result = viewModel.airlineList.value
         assertEquals(expected, result)
 
         // Tear down
