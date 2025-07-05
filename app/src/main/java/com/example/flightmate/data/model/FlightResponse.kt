@@ -8,7 +8,7 @@ import kotlin.String
 import com.example.flightmate.domain.model.flight.FlightInfo
 
 /**
- * 航班資訊。
+ * 航班查詢結果。
  *
  * @param instantSchedule 航班資訊列表。
  */
@@ -19,6 +19,8 @@ data class FlightResponse(
 )
 
 /**
+ * 航班資訊。
+ *
  * @param expectTime 預計時間。
  * @param realTime 實際時間。
  * @param airlineName 航空公司名稱。
