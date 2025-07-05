@@ -9,7 +9,7 @@ sealed class AppException(
     class HttpError(val code: Int, val errorBody: String?): AppException()
 
     /** 因無法連線、或 timeout 等原因發生的例外。 */
-    object NetworkError : AppException("Network error") {
+    data object NetworkError : AppException("Network error") {
         private fun readResolve(): Any = NetworkError
     }
 
