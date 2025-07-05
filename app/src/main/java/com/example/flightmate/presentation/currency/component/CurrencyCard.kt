@@ -21,12 +21,14 @@ import com.example.flightmate.domain.model.currency.ConvertedCurrency
 
 @Composable
 fun CurrencyCard(
-    currency: ConvertedCurrency
+    currency: ConvertedCurrency,
+    modifier: Modifier = Modifier
 ) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        )
+        ),
+        modifier = modifier
     ) {
         Row(
             modifier = Modifier.padding(16.dp),

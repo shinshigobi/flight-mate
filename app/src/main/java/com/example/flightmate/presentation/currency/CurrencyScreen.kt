@@ -97,8 +97,14 @@ fun CurrencyScreen(
                             contentPadding = PaddingValues(16.dp),
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            items(currencyUiModel.convertedList) { convertedCurrency ->
-                                CurrencyCard(currency = convertedCurrency)
+                            items(
+                                items = currencyUiModel.convertedList,
+                                key = { it.code }
+                            ) { convertedCurrency ->
+                                CurrencyCard(
+                                    currency = convertedCurrency,
+                                    modifier = Modifier.animateItem()
+                                )
                             }
                         }
                     }
