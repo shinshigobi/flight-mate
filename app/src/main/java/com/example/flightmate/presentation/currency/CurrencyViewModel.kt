@@ -57,7 +57,6 @@ class CurrencyViewModel @Inject constructor(
             _uiState.value = CurrencyUiState.Loading
 
             val result = getCurrencyDataUseCase.invoke(
-                "fca_live_dSqZrcLeMaOu0fAT6mktIAgt136ymgnjd8nLifxv",
                 baseCurrency,
                 null
             )

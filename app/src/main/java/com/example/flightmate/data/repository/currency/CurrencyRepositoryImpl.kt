@@ -1,6 +1,7 @@
 package com.example.flightmate.data.repository.currency
 
 import android.util.Log
+import com.example.flightmate.BuildConfig
 import com.example.flightmate.data.remote.CurrencyApi
 import com.example.flightmate.domain.config.currency.CurrencyConfig
 import com.example.flightmate.domain.exception.AppException
@@ -11,11 +12,11 @@ class CurrencyRepositoryImpl(
     val api: CurrencyApi
 ): CurrencyRepository {
     override suspend fun getExchangeRateData(
-        apiKey: String,
         baseCurrency: String?,
         currencies: String?
     ): Result<Map<String, Double>> {
         return try {
+            val apiKey = BuildConfig.EXCHANGE_RATE_API_KEY
             val currencies = currencies.takeIf { !it.isNullOrEmpty() } ?: CurrencyConfig.supportedCurrencies.joinToString(",")
             val response = api.getExchangeRateData(apiKey, baseCurrency, currencies)
             if (response.isSuccessful) {
