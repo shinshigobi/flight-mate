@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">FlightMate</string>
+    <string name="retry">重新嘗試</string>
+    <string name="server_error_title">伺服器錯誤</string>
+    <string name="server_error_msg">目前伺服器異常，請稍後再試。</string>
+    <string name="network_error_title">網路連線失敗</string>
+    <string name="network_error_msg">請確認您的網路是否正常，或稍後再試。</string>
+    <string name="unknown_error_title">發生未知錯誤</string>
+    <string name="unknown_error_msg">目前發生了非預期錯誤，請稍後再試。</string>
 </resources>

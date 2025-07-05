@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -74,10 +75,10 @@ fun ErrorContent(
 @Composable
 fun ApiErrorContent(buttonOnClick: () -> Unit) {
     ErrorContent(
-        title = "伺服器錯誤",
-        message = "請重新嘗試",
+        title = stringResource(R.string.server_error_title),
+        message = stringResource(R.string.server_error_msg),
         iconResId = R.drawable.ic_sentiment_very_dissatisfied,
-        buttonLabel = "重新嘗試",
+        buttonLabel = stringResource(R.string.retry),
         buttonOnClick = buttonOnClick
     )
 }
@@ -85,10 +86,10 @@ fun ApiErrorContent(buttonOnClick: () -> Unit) {
 @Composable
 fun NetworkErrorContent(buttonOnClick: () -> Unit) {
     ErrorContent(
-        title = "網路連線失敗",
-        message = "請確認您的網路是否正常，或稍後再試。",
+        title = stringResource(R.string.network_error_title),
+        message = stringResource(R.string.network_error_msg),
         iconResId = R.drawable.ic_signal_disconnected,
-        buttonLabel = "重新嘗試",
+        buttonLabel = stringResource(R.string.retry),
         buttonOnClick = buttonOnClick
     )
 }
@@ -96,10 +97,10 @@ fun NetworkErrorContent(buttonOnClick: () -> Unit) {
 @Composable
 fun UnknownErrorContent(buttonOnClick: () -> Unit) {
     ErrorContent(
-        title = "發生未知錯誤",
-        message = "請重新嘗試",
+        title = stringResource(R.string.unknown_error_title),
+        message = stringResource(R.string.unknown_error_msg),
         iconResId = R.drawable.ic_sentiment_very_dissatisfied,
-        buttonLabel = "重新嘗試",
+        buttonLabel = stringResource(R.string.retry),
         buttonOnClick = buttonOnClick
     )
 }
@@ -124,14 +125,14 @@ fun ErrorContent() {
         )
         Spacer(modifier = Modifier.height(48.dp))
         Text(
-            text = "網路連線失敗",
+            text = stringResource(R.string.network_error_title),
             color = MaterialTheme.colorScheme.onBackground,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "請確認您的網路是否正常，或稍後再試。",
+            text = stringResource(R.string.network_error_msg),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 14.sp,
         )
@@ -140,7 +141,7 @@ fun ErrorContent() {
             onClick = {}
         ) {
             Text(
-                text = "重新嘗試"
+                text = stringResource(R.string.retry)
             )
         }
     }
