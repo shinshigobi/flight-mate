@@ -32,12 +32,15 @@ import com.example.flightmate.R
 import com.example.flightmate.domain.model.flight.FlightInfo
 
 @Composable
-fun FlightCard(flight: FlightInfo) {
+fun FlightCard(
+    flight: FlightInfo,
+    modifier: Modifier = Modifier.fillMaxWidth()
+) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
         ),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
     ) {
         Column {
             val rowModifier = Modifier.padding(12.dp)

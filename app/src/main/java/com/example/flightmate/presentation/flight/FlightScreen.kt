@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -163,8 +164,16 @@ fun FlightList(flightList: List<FlightInfo>) {
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(flightList) { flight ->
-                FlightCard(flight = flight)
+            items(
+                items = flightList,
+                key = { it.airline.no }
+            ) { flight ->
+                FlightCard(
+                    flight = flight,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .animateItem()
+                )
             }
         }
     }
