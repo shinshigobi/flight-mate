@@ -42,7 +42,7 @@ class FlightViewModelTest {
     }
 
     @Test
-    fun flightList_filters_by_status() = runTest {
+    fun should_filter_flights_by_status_when_status_filter_is_applied() = runTest {
         // Arrange
         val expected = listOf(fakeFlight1, fakeFlight2) // 只有延遲的航班
         val job = launch { viewModel.flightList.collect {} }
@@ -60,7 +60,7 @@ class FlightViewModelTest {
     }
 
     @Test
-    fun flightList_filters_by_airline() = runTest {
+    fun should_filter_flights_by_airline_when_airline_filter_is_applied() = runTest {
         // Arrange
         val expected = listOf(fakeFlight2)
         val job = launch { viewModel.flightList.collect {} }
@@ -78,7 +78,7 @@ class FlightViewModelTest {
     }
 
     @Test
-    fun flightList_filters_by_both_airline_and_status() = runTest {
+    fun should_filter_flights_by_status_and_airline_when_both_filters_are_applied() = runTest {
         // Arrange
         val expected = listOf(fakeFlight2)
         val job = launch { viewModel.flightList.collect {} }
@@ -97,7 +97,7 @@ class FlightViewModelTest {
     }
 
     @Test
-    fun flightList_returns_all_when_no_filter_applied() = runTest {
+    fun should_show_all_flights_when_no_filter_is_applied() = runTest {
         // Arrange
         val expected = listOf(fakeFlight1, fakeFlight2, fakeFlight3)
         val job = launch { viewModel.flightList.collect {} }
@@ -114,7 +114,7 @@ class FlightViewModelTest {
     }
 
     @Test
-    fun flightList_returns_empty_when_no_match() = runTest {
+    fun should_show_empty_list_when_no_flight_matches_filters() = runTest {
         // Arrange
         val job = launch { viewModel.flightList.collect {} }
 
@@ -132,7 +132,7 @@ class FlightViewModelTest {
     }
 
     @Test
-    fun flightList_returns_all_when_filters_cleared() = runTest {
+    fun should_show_all_flights_when_filters_are_cleared() = runTest {
         // Arrange
         val expected = listOf(fakeFlight1, fakeFlight2, fakeFlight3)
         val job = launch { viewModel.flightList.collect {} }
@@ -157,7 +157,7 @@ class FlightViewModelTest {
     }
 
     @Test
-    fun airlineList_returns_distinct_airlines() = runTest {
+    fun should_return_distinct_airlines_when_airline_list_is_collected() = runTest {
         // Arrange
         val expected = listOf(fakeFlight1.airline, fakeFlight2.airline)
         val job = launch { viewModel.airlineList.collect {} }
