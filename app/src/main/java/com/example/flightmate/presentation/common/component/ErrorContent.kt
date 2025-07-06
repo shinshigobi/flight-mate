@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -50,6 +52,7 @@ fun ErrorContent(
             .fillMaxWidth()
             .fillMaxHeight()
             .padding(16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         Icon(
             painter = painterResource(iconResId),
