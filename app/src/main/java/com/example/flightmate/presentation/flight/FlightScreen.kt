@@ -111,17 +111,15 @@ fun FlightScreen(
                     .fillMaxHeight()
                     .padding(combinedPadding)
             ) {
-                when (uiState) {
-                    is FlightUiState.Loading -> {
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .width(48.dp)
-                                .align(Alignment.Center)
-                        )
+                if (uiState is FlightUiState.Error) {
+                    FlightErrorContent(uiState) {
+                        viewModel.manualRefresh()
                     }
-
-                    is FlightUiState.Success -> {
-                        if (flightList.isEmpty()) {
+                } else {
+                    Box(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        if (flightList.isEmpty() && uiState is FlightUiState.Success) {
                             if (viewModel.isOriginalListEmpty) {
                                 FlightEmptyContent {
                                     viewModel.manualRefresh()
@@ -136,11 +134,12 @@ fun FlightScreen(
                         } else {
                             FlightList(flightList)
                         }
-                    }
-
-                    is FlightUiState.Error -> {
-                        FlightErrorContent(uiState) {
-                            viewModel.manualRefresh()
+                        if (uiState is FlightUiState.Loading) {
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .width(48.dp)
+                                    .align(Alignment.Center)
+                            )
                         }
                     }
                 }
