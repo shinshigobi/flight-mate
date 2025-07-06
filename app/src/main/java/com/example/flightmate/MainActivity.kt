@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            FlightMateTheme(dynamicColor = false) {
+            FlightMateTheme {
                 val navController = rememberNavController()
                 val items = listOf(
                     BottomNavItem(Screen.Flight, stringResource(R.string.flight), R.drawable.ic_travel),
