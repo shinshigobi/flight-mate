@@ -26,9 +26,19 @@ FlightMate 是一個以 Jetpack Compose 即 MVVM 架構實作的 Android App，�
 
 ### 深色主題支援
 - 支援 Material 3 的深色與亮色主題切換
-- 可手動設定是否啟用動態色彩（dynamicColor = false）
+- 可手動設定是否啟用動態色彩，預設為啟動（dynamicColor = true）
 
----
+### 螢幕轉向支援
+螢幕旋轉時畫面重建，不會遺失資料或閃爍
+
+## 技術堆棧
+- Kotlin + Jetpack Compose：現代聲明式 UI 開發
+- ViewModel + StateFlow：UI 狀態管理
+- Retrofit + Moshi：API 請求與 JSON 解析
+- Hilt：依賴注入
+- Coil：非同步圖片載入
+- Material3 + Compose Theme：符合 MaterialDesign 的一致性 UI 設計
+- JUnit + Turbine：單元測試與 Flow 驗證
 
 ## API Key 管理
 
@@ -37,4 +47,4 @@ FlightMate 是一個以 Jetpack Compose 即 MVVM 架構實作的 Android App，�
 ## TODO
 
 - [ ] 加入航班即時狀態更新動畫
-- [ ] 導入單元測試與 CI/CD workflow
+- [ ] 導入 CI/CD workflow
